@@ -1,5 +1,3 @@
-include ':app',
-        ':v-frame',
-        ':v-customview',
+include ':sample',
         ':library:NgdsNetWork',
         ':library:NgdsUtils'
