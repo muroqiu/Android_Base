@@ -6,8 +6,8 @@ android {
 
 
     defaultConfig {
-        applicationId "com.scrm.test.sqlite"
-        minSdkVersion 15
+        applicationId "com.scrm.im"
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -33,4 +33,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
 }

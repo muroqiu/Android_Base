@@ -24,6 +24,16 @@
         android:paddingLeft="20dp"
         android:onClick="onBtnTestClick"/>
 
+    <Button
+        android:id="@+id/btnTestWX"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:layout_margin="20dp"
+        android:gravity="bottom"
+        android:text="解密微信数据库"
+        android:paddingLeft="20dp"
+        android:onClick="onBtnTestWXClick"/>
 
     <TextView
         android:id="@+id/txtTest"
