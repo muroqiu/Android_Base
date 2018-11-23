@@ -35,6 +35,28 @@
         android:paddingLeft="20dp"
         android:onClick="onBtnTestWXClick"/>
 
+    <Button
+        android:id="@+id/btnDecryptedWX"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:layout_margin="20dp"
+        android:gravity="bottom"
+        android:text="解密微信数据库-全库"
+        android:paddingLeft="20dp"
+        android:onClick="onBtnDecryptedWXClick"/>
+
+    <Button
+        android:id="@+id/btnDecryptedWXContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:layout_margin="20dp"
+        android:gravity="bottom"
+        android:text="解密微信数据库-联系人"
+        android:paddingLeft="20dp"
+        android:onClick="onBtnDecryptedWXContactClick"/>
+
     <TextView
         android:id="@+id/txtTest"
         android:layout_width="match_parent"

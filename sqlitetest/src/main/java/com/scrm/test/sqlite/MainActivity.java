@@ -5,18 +5,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scrm.test.sqlite.db.DbManager;
 import com.scrm.test.sqlite.db.SnsInfo;
@@ -25,30 +23,47 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
 
+import org.zeroturnaround.zip.ZipUtil;
+
 import java.io.File;
-import java.security.MessageDigest;
-import java.util.Arrays;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
+    private final static String TAG = MainActivity.class.getSimpleName();
+
     EditText edtTest;
     TextView txtTest;
     String strTest = "080010001800222038346230363537343535396638313065353536326634616534343765303031642A0208012A0208022A0208032A0208042A0208052A0208063800400748AB998BB3E72C5000600C680080010092010420002800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D5E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D4E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D6E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D3E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D6E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D5E290DE0545000000004800AA0100C00100C80100D80100";
 
     String strTest2 = "e4bda0e5a5bd";
-    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/enmicromsg20181113T152341.db";
-//    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/EnMicroMsg.db";
-    private String mUin = "1041636089";
+    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/enmicromsg20181108T000021.db";
+    //    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/EnMicroMsg.db";
+//    private String mUin = "1041636089";
+    private String mUin = "490451521";
     // 867251035344598   91c1892
-
+    private String mDeviceID = "99001204674081";
+    //    enmicromsg20181108T000021
+//    uin: 490451521
+//    mDeviceID: 99001204674081
+//
     private static String imei;
     private static String imei2;
     private static String meid;
     private static String sSerialInfo;
     private static Vector<String> imeiLst = new Vector<>();
 
+    private final static String[] TABLES = {"chatroom", "ContactLabel", "fmessage_conversation",
+            "fmessage_msginfo", "img_flag", "rcontact", "userinfo", "userinfo2"};
+
+    public static String getImei() {
+        return imei;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +75,32 @@ public class MainActivity extends AppCompatActivity {
 
         edtTest.setText(strTest);
 
+        Timer mTimer = new Timer("check");
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //最大分配内存获取方法2
+                float maxMemory = (float) (Runtime.getRuntime().maxMemory() * 1.0/ (1024 * 1024));
+                //当前分配的总内存
+                float totalMemory = (float) (Runtime.getRuntime().totalMemory() * 1.0/ (1024 * 1024));
+                //剩余内存
+                float freeMemory = (float) (Runtime.getRuntime().freeMemory() * 1.0 / (1024 * 1024));
+                Log.e(TAG, "max_Memory " + maxMemory + " MB");
+                Log.e(TAG, "totalMemry " + totalMemory + " MB");
+                Log.e(TAG, "freeMemory " + freeMemory + " MB");
+            }
+        }, 5000, 1000);
+
     }
 
 //
 //    private static boolean bwv() {
 //        g.buY();
-//        a aVar = a.xzb;
+//        TABLES aVar = TABLES.xzb;
 //        i iVar = new i();
 //        try {
 //            com.tencent.mm.kernel.g.Dr();
-//            com.tencent.mm.kernel.g.Dq().Db().a(aVar, new String(iVar.toByteArray(), Charset.forName("ISO-8859-1")));
+//            com.tencent.mm.kernel.g.Dq().Db().TABLES(aVar, new String(iVar.toByteArray(), Charset.forName("ISO-8859-1")));
 //        } catch (IOException e) {
 //            x.w("MicroMsg.RedDotUtil", "mardRedotList save exception:" + e.getLocalizedMessage());
 //        }
@@ -102,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void testByte() {
         String a;
-//        a.getBytes()
+//        TABLES.getBytes()
         byte[] b1 = new byte[2];
         new String(b1, Charset.forName("ISO-8859-1"));
     }
@@ -257,10 +288,10 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param dbFile
      */
-    private void openWxDb(File dbFile, String ii) throws Exception {
+    private void openWxDb(File dbFile, String deviceID) throws Exception {
 //        String imei = initPhoneIMEI();
-        String mDbPassword = initDbPassword(ii, mUin);
-        Log.e("openWxDb", ii + "   " + mDbPassword);
+        String mDbPassword = initDbPassword(deviceID, mUin);
+        Log.e("openWxDb", deviceID + "   " + mDbPassword);
         Context context = this.getApplicationContext();
         SQLiteDatabase.loadLibs(context);
         SQLiteDatabaseHook hook = new SQLiteDatabaseHook() {
@@ -359,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.e("openWxDb", db.length() + " " + db.getTotalSpace());
         initPhoneIds();
-        for (int i=0; i< imeiLst.size(); i++) {
+        for (int i = 0; i < imeiLst.size(); i++) {
             try {
                 openWxDb(db, imeiLst.get(i));
                 Log.e("imeiLst", i + " " + imeiLst.get(i));
@@ -368,5 +399,221 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("openWxDb", e.toString());
             }
         }
+    }
+
+    // 加密数据库
+    public static void encrypt(Context ctxt, String dbName,
+                               String passphrase) throws IOException {
+        File originalFile = ctxt.getDatabasePath(dbName);
+        if (originalFile.exists()) {
+            File newFile = File.createTempFile("sqlcipherutils", "tmp", ctxt.getCacheDir());
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(originalFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE);
+
+            db.rawExecSQL(String.format("ATTACH DATABASE '%s' AS encrypted KEY '%s';", newFile.getAbsolutePath(), passphrase));
+            db.rawExecSQL("SELECT sqlcipher_export('encrypted')");
+            db.rawExecSQL("DETACH DATABASE encrypted;");
+            int version = db.getVersion();
+            db.close();
+            db = SQLiteDatabase.openDatabase(newFile.getAbsolutePath(), passphrase, null, SQLiteDatabase.OPEN_READWRITE);
+            db.setVersion(version);
+            db.close();
+            originalFile.delete();
+            newFile.renameTo(originalFile);
+        }
+    }
+
+    // 解密数据库-全库
+    public void decryptAll(Context ctxt, File originalFile,
+                           String deviceID) throws IOException {
+        String passphrase = initDbPassword(deviceID, mUin);
+        Log.e("decryptAll", deviceID + "   " + passphrase);
+
+        if (originalFile.exists()) {
+            SQLiteDatabase.loadLibs(ctxt);
+            SQLiteDatabaseHook hook = new SQLiteDatabaseHook() {
+                public void preKey(SQLiteDatabase database) {
+                }
+
+                public void postKey(SQLiteDatabase database) {
+                    database.rawExecSQL("PRAGMA cipher_migrate;"); //兼容2.0的数据库
+                }
+            };
+
+//            File newFile = File.createTempFile(mUin + "-all", "tmp", originalFile.getParentFile());
+            File newFile = new File(originalFile.getParentFile(), mUin + "-all.db");
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+
+//            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, mDbPassword, null, hook);
+//            SQLiteDatabase db = SQLiteDatabase.openDatabase(originalFile.getAbsolutePath(), passphrase, null, SQLiteDatabase.OPEN_READWRITE);
+
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(originalFile, passphrase, null, hook);
+
+            db.rawExecSQL(String.format("ATTACH DATABASE '%s' AS dcr KEY '';", newFile.getAbsolutePath()));
+            db.rawExecSQL("SELECT sqlcipher_export('dcr')");
+            db.rawExecSQL("DETACH DATABASE dcr;");
+//            int version = db.getVersion();
+            db.close();
+//            db = SQLiteDatabase.openDatabase(newFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE);
+//            db = SQLiteDatabase.openOrCreateDatabase(newFile, "", null, hook);
+//            db.setVersion(version);
+//            db.close();
+//            originalFile.delete();
+//            newFile.renameTo(originalFile);
+
+            long timeBegin = System.currentTimeMillis();
+            Log.e(TAG, "begin " + timeBegin);
+            File ztZipFile = new File(newFile.getAbsolutePath() + ".zip");
+            ZipUtil.packEntry(newFile, ztZipFile);
+            long timeEnd = System.currentTimeMillis();
+            Log.e(TAG, "end " + timeEnd + "   zt-zip cost " + (timeEnd - timeBegin) / 1000 + " s");
+            Log.e(TAG, "zt-zip size " + (ztZipFile.length() / 1024 / 1024) + " MB");
+
+            timeBegin = System.currentTimeMillis();
+            Log.e(TAG, "begin " + timeBegin);
+            File javaZipFile = new File(newFile.getAbsolutePath() + "-java.zip");
+            new CompressUtil(javaZipFile).zipFiles(newFile);
+            timeEnd = System.currentTimeMillis();
+            Log.e(TAG, "end " + timeEnd + "   java-zip cost " + (timeEnd - timeBegin) / 1000 + " s");
+            Log.e(TAG, "java-zip size " + (javaZipFile.length() / 1024 / 1024) + " MB");
+        }
+    }
+
+
+    // 解密数据库-联系人
+    public void decryptContact(Context ctxt, File originalFile,
+                               String deviceID) throws IOException {
+        String passphrase = initDbPassword(deviceID, mUin);
+        Log.e("decryptContact", deviceID + "   " + passphrase);
+
+        if (originalFile.exists()) {
+            SQLiteDatabase.loadLibs(ctxt);
+            SQLiteDatabaseHook hook = new SQLiteDatabaseHook() {
+                public void preKey(SQLiteDatabase database) {
+                }
+
+                public void postKey(SQLiteDatabase database) {
+                    database.rawExecSQL("PRAGMA cipher_migrate;"); //兼容2.0的数据库
+                }
+            };
+
+//            File newFile = File.createTempFile(mUin + "-contact", "tmp", originalFile.getParentFile());
+
+            File newFile = new File(originalFile.getParentFile(), mUin + "-contact.db");
+            if (newFile.exists()) {
+                newFile.delete();
+            }
+
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(originalFile, passphrase, null, hook);
+
+            db.rawExecSQL(String.format("ATTACH DATABASE '%s' AS dcr KEY '';", newFile.getAbsolutePath()));
+            copyTable(db, TABLES);
+            db.rawExecSQL("DETACH DATABASE dcr;");
+//            int version = db.getVersion();
+            db.close();
+//            db = SQLiteDatabase.openDatabase(newFile.getAbsolutePath(), "", null, SQLiteDatabase.OPEN_READWRITE);
+//            db = SQLiteDatabase.openOrCreateDatabase(newFile, "", null, hook);
+//            db.setVersion(version);
+//            db.close();
+//            originalFile.delete();
+//            newFile.renameTo(originalFile);
+
+            long timeBegin = System.currentTimeMillis();
+            Log.e(TAG, "begin " + timeBegin);
+            File ztZipFile = new File(newFile.getAbsolutePath() + ".zip");
+            ZipUtil.packEntry(newFile, ztZipFile);
+            long timeEnd = System.currentTimeMillis();
+            Log.e(TAG, "end " + timeEnd + "   zt-zip cost " + (timeEnd - timeBegin) + " ms");
+            Log.e(TAG, "zt-zip size " + (ztZipFile.length() / 1024 / 1024) + " MB");
+
+            timeBegin = System.currentTimeMillis();
+            Log.e(TAG, "begin " + timeBegin);
+            File javaZipFile = new File(newFile.getAbsolutePath() + "-java.zip");
+            new CompressUtil(javaZipFile).zipFiles(newFile);
+            timeEnd = System.currentTimeMillis();
+            Log.e(TAG, "end " + timeEnd + "   java-zip cost " + (timeEnd - timeBegin) + " ms");
+            Log.e(TAG, "java-zip size " + (javaZipFile.length() / 1024 / 1024) + " MB");
+        }
+    }
+
+    private void copyTable(SQLiteDatabase db, String[] tableNames) {
+        for (String table : tableNames) {
+            try {
+                db.rawExecSQL("create table dcr." + table + " as select * from " + table);
+            } catch (Exception e) {
+                // 单个表若不存在则不中断
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void onBtnDecryptedWXClick(View view) {
+//        initPhoneIds();
+//        for (int i = 0; i < imeiLst.size(); i++) {
+//            try {
+//                decryptContact(this, db, imeiLst.get(i));
+//                Log.e("imeiLst", i + " " + imeiLst.get(i));
+//                break;
+//            } catch (Exception e) {
+//                Log.e("openWxDb", e.toString());
+//            }
+//        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File db = new File(mCurrApkPath);
+                if (!db.exists()) {
+                    return;
+                }
+                Log.e("openWxDb", db.length() + " " + db.getTotalSpace());
+                try {
+//            long timeBegin = System.currentTimeMillis();
+//            Log.e(TAG, "begin " + timeBegin);
+//            File ztZipFile = new File(db.getAbsolutePath() + ".zip");
+//            ZipUtil.packEntry(db, ztZipFile);
+//            long timeEnd = System.currentTimeMillis();
+//            Log.e(TAG, "end " + timeEnd + "   zt-zip cost " + (timeEnd - timeBegin) + " ms");
+//            Log.e(TAG, "zt-zip size " + (ztZipFile.length() / 1024 / 1024) + " MB");
+//            Log.d("pack db", "OK");
+
+                    decryptAll(MainActivity.this, db, mDeviceID);
+                    Log.d("openWxDb", "OK");
+                } catch (Exception e) {
+                    Log.e("openWxDb", e.toString());
+                }
+            }
+        }).start();
+    }
+
+    public void onBtnDecryptedWXContactClick(View view) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File db = new File(mCurrApkPath);
+                if (!db.exists()) {
+                    return;
+                }
+                Log.e("openWxDb", db.length() + " " + db.getTotalSpace());
+                initPhoneIds();
+//        for (int i = 0; i < imeiLst.size(); i++) {
+//            try {
+//                decryptContact(this, db, imeiLst.get(i));
+//                Log.e("imeiLst", i + " " + imeiLst.get(i));
+//                break;
+//            } catch (Exception e) {
+//                Log.e("openWxDb", e.toString());
+//            }
+//        }
+
+                try {
+                    decryptContact(MainActivity.this, db, mDeviceID);
+                    Log.d("openWxDb", "OK");
+                } catch (Exception e) {
+                    Log.e("openWxDb", e.toString());
+                }
+            }
+        }).start();
     }
 }
