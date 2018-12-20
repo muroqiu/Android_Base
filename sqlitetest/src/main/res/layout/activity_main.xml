@@ -57,6 +57,18 @@
         android:paddingLeft="20dp"
         android:onClick="onBtnDecryptedWXContactClick"/>
 
+
+    <Button
+        android:id="@+id/btnDeviceInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="20dp"
+        android:layout_margin="20dp"
+        android:gravity="bottom"
+        android:text="设备信息"
+        android:paddingLeft="20dp"
+        android:onClick="onBtnDeviceInfoClick"/>
+
     <TextView
         android:id="@+id/txtTest"
         android:layout_width="match_parent"

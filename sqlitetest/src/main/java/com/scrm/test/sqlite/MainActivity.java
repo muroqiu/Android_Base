@@ -75,21 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
         edtTest.setText(strTest);
 
-        Timer mTimer = new Timer("check");
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //最大分配内存获取方法2
-                float maxMemory = (float) (Runtime.getRuntime().maxMemory() * 1.0/ (1024 * 1024));
-                //当前分配的总内存
-                float totalMemory = (float) (Runtime.getRuntime().totalMemory() * 1.0/ (1024 * 1024));
-                //剩余内存
-                float freeMemory = (float) (Runtime.getRuntime().freeMemory() * 1.0 / (1024 * 1024));
-                Log.e(TAG, "max_Memory " + maxMemory + " MB");
-                Log.e(TAG, "totalMemry " + totalMemory + " MB");
-                Log.e(TAG, "freeMemory " + freeMemory + " MB");
-            }
-        }, 5000, 1000);
+        // 内存检测
+//        Timer mTimer = new Timer("check");
+//        mTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                //最大分配内存获取方法2
+//                float maxMemory = (float) (Runtime.getRuntime().maxMemory() * 1.0 / (1024 * 1024));
+//                //当前分配的总内存
+//                float totalMemory = (float) (Runtime.getRuntime().totalMemory() * 1.0 / (1024 * 1024));
+//                //剩余内存
+//                float freeMemory = (float) (Runtime.getRuntime().freeMemory() * 1.0 / (1024 * 1024));
+//                Log.e(TAG, "max_Memory " + maxMemory + " MB");
+//                Log.e(TAG, "totalMemry " + totalMemory + " MB");
+//                Log.e(TAG, "freeMemory " + freeMemory + " MB");
+//            }
+//        }, 5000, 1000);
 
     }
 
@@ -356,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("sSerialInfo", sSerialInfo);
                 imeiLst.clear();
                 imeiLst.add(imei);
+                imeiLst.add(0, imei);
                 imeiLst.add(imei2);
                 imeiLst.add(meid);
                 imeiLst.add(sSerialInfo);
@@ -380,6 +382,8 @@ public class MainActivity extends AppCompatActivity {
                 sSerialInfo = Build.SERIAL;
             }
         }
+
+
         return sSerialInfo;
     }
 
@@ -597,15 +601,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Log.e("openWxDb", db.length() + " " + db.getTotalSpace());
                 initPhoneIds();
-//        for (int i = 0; i < imeiLst.size(); i++) {
-//            try {
-//                decryptContact(this, db, imeiLst.get(i));
-//                Log.e("imeiLst", i + " " + imeiLst.get(i));
-//                break;
-//            } catch (Exception e) {
-//                Log.e("openWxDb", e.toString());
-//            }
-//        }
+                for (int i = 0; i < imeiLst.size(); i++) {
+                    try {
+                        decryptContact(MainActivity.this, db, imeiLst.get(i));
+                        Log.e("imeiLst", i + " " + imeiLst.get(i));
+                        break;
+                    } catch (Exception e) {
+                        Log.e("openWxDb", e.toString());
+                    }
+                }
 
                 try {
                     decryptContact(MainActivity.this, db, mDeviceID);
@@ -615,5 +619,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    /**
+     * 获取指定字段信息
+     * @return
+     */
+    @SuppressLint("MissingPermission")
+    private String getDeviceInfo(){
+        StringBuffer sb =new StringBuffer();
+        sb.append("主板："+Build.BOARD);
+        sb.append("\n系统启动程序版本号："+ Build.BOOTLOADER);
+        sb.append("\n系统定制商："+Build.BRAND);
+        sb.append("\ncpu指令集："+Build.CPU_ABI);
+        sb.append("\ncpu指令集2："+Build.CPU_ABI2);
+        sb.append("\n设置参数："+Build.DEVICE);
+        sb.append("\n显示屏参数："+Build.DISPLAY);
+        sb.append("\n无线电固件版本："+Build.getRadioVersion());
+        sb.append("\n硬件识别码："+Build.FINGERPRINT);
+        sb.append("\n硬件名称："+Build.HARDWARE);
+        sb.append("\nHOST:"+Build.HOST);
+        sb.append("\n修订版本列表："+Build.ID);
+        sb.append("\n硬件制造商："+Build.MANUFACTURER);
+        sb.append("\n版本："+Build.MODEL);
+        sb.append("\n硬件序列号："+Build.SERIAL);
+        sb.append("\n手机制造商："+Build.PRODUCT);
+        sb.append("\n描述Build的标签："+Build.TAGS);
+        sb.append("\nTIME:"+Build.TIME);
+        sb.append("\nbuilder类型："+Build.TYPE);
+        sb.append("\nUSER:"+Build.USER);
+        return sb.toString();
+    }
+
+    public void onBtnDeviceInfoClick(View view) {
+        Log.d(TAG, getDeviceInfo());
+        initPhoneIds();
     }
 }
