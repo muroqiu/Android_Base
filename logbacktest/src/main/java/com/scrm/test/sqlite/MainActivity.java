@@ -663,4 +663,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "for each");
         }
     }
+
+    public void onBtnLogClick(View view) {
+        for (int i =0; i<= 100; i++) {
+            LogUtils.d(TAG, i + " just test Linux version 3.18.22+ (flyme@mz-builder-5) (gcc version 4.9.x-google 20140827 (prerelease) (GCC) ) #1 SMP PREEMPT Tue Jul 24 20:23:08 CST 2018");
+        }
+
+    }
 }
