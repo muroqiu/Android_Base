@@ -52,7 +52,7 @@ public class LogUtils {
     // for test
     private static final int MAX_HISTORY = 2;
 
-    private static final String MAX_FILE_SIZE = "2kb";
+    private static final String MAX_FILE_SIZE = "4kb";
     private static final String MAX_TOTAL_SIZE = "10kb";
     /**
      * 日志输出中的进程名，可以通过主动调用{@link #init(String)}进行设置
@@ -78,6 +78,23 @@ public class LogUtils {
         String fileNamePattern = getLogFileDir() + "debug_%d{yyyyMMddHHmm}_%i.log.zip";
         Log.d(TAG, "init: processName = " + processName + ", fileNamePattern = " + fileNamePattern);
         RollingFileAppender rollingFileAppender = configureLogbackAppender(fileNamePattern);
+        sLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(processName);
+        sLogger.setLevel(LOGGER_LEVEL);
+        sLogger.addAppender(rollingFileAppender);
+        sProcessName = processName;
+    }
+
+    /**
+     * 初始化
+     *
+     * @param processName 日志输出中的进程名
+     */
+    public static void initNew(String processName) {
+//        String fileNamePattern = getLogFileDir() + "debug_%d{yyyyMMddHH}_%i.log.zip";
+        // for test
+        String fileNamePattern = getLogFileDir() + "debug_%d{yyyyMMddHHmm}_%i.log.zip";
+        Log.d(TAG, "init: processName = " + processName + ", fileNamePattern = " + fileNamePattern);
+        RollingFileAppender rollingFileAppender = configureLogbackAppender2(fileNamePattern);
         sLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(processName);
         sLogger.setLevel(LOGGER_LEVEL);
         sLogger.addAppender(rollingFileAppender);

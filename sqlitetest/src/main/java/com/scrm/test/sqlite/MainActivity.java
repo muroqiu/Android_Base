@@ -26,12 +26,14 @@ import net.sqlcipher.database.SQLiteDatabaseHook;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Map;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
     String strTest = "080010001800222038346230363537343535396638313065353536326634616534343765303031642A0208012A0208022A0208032A0208042A0208052A0208063800400748AB998BB3E72C5000600C680080010092010420002800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D5E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D4E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D6E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D3E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D6E290DE0545000000004800A201250D00007AC41500007AC41D00007AC42500007AC42802300038D5E290DE0545000000004800AA0100C00100C80100D80100";
 
     String strTest2 = "e4bda0e5a5bd";
-    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/enmicromsg20181108T000021.db";
-    //    private String mCurrApkPath = "/sdcard/com.scrm.robot.plus/EnMicroMsg.db";
+
+    private String mCurrApkPath = "/sdcard/scrm/db/36faa62b7d05-enmicromsg20190130T132559.db";
+    //    private String mCurrApkPath = "/sdcard/scrm/db/EnMicroMsg-1041636089-0130.db";
+//    private String mCurrApkPath = "/sdcard/scrm/db/288a959c7cf5-enmicromsg20190130T120103.db";
 //    private String mUin = "1041636089";
-    private String mUin = "490451521";
+//    private String mUin = "-912274357";
+    private String mUin = "-1934568920";
+
     // 867251035344598   91c1892
     private String mDeviceID = "99001204674081";
     //    enmicromsg20181108T000021
@@ -393,7 +399,26 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Log.e("openWxDb", db.length() + " " + db.getTotalSpace());
-        initPhoneIds();
+//        initPhoneIds();
+        imeiLst.clear();
+
+        imeiLst.add("36faa62b7d05");
+        imeiLst.add("869288034308461");
+        imeiLst.add("869288034308479");
+
+//        imeiLst.add("288a959c7cf5");
+//        imeiLst.add("868374038376901");
+//        imeiLst.add("868374038376893");
+
+        imeiLst.add("1234567890ABCDEF");
+        imeiLst.add("1234567890abcdef");
+        imeiLst.add("0123456789abcdef");
+        imeiLst.add("0123456789ABCDEF");
+        imeiLst.add("FFFFFFFFFFFFFFFF");
+//        imeiLst.add("869722033574277");
+//        imeiLst.add("869722033574285");
+//        imeiLst.add("99001204678712");
+
         for (int i = 0; i < imeiLst.size(); i++) {
             try {
                 openWxDb(db, imeiLst.get(i));
@@ -403,6 +428,30 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("openWxDb", e.toString());
             }
         }
+
+
+        // TODO Auto-generated method stub
+        try {
+            FileInputStream file = new FileInputStream("/sdcard/scrm/db/autoauth.cfg");
+            ObjectInputStream mObjectInputStream = new ObjectInputStream(file);
+            Map map = (Map) mObjectInputStream.readObject();
+            System.out.println(map);
+
+            file = new FileInputStream("/sdcard/scrm/db/CompatibleInfo-029.cfg");
+            mObjectInputStream = new ObjectInputStream(file);
+            map = (Map) mObjectInputStream.readObject();
+            System.out.println(map);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     // 加密数据库
@@ -623,31 +672,32 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 获取指定字段信息
+     *
      * @return
      */
     @SuppressLint("MissingPermission")
-    private String getDeviceInfo(){
-        StringBuffer sb =new StringBuffer();
-        sb.append("主板："+Build.BOARD);
-        sb.append("\n系统启动程序版本号："+ Build.BOOTLOADER);
-        sb.append("\n系统定制商："+Build.BRAND);
-        sb.append("\ncpu指令集："+Build.CPU_ABI);
-        sb.append("\ncpu指令集2："+Build.CPU_ABI2);
-        sb.append("\n设置参数："+Build.DEVICE);
-        sb.append("\n显示屏参数："+Build.DISPLAY);
-        sb.append("\n无线电固件版本："+Build.getRadioVersion());
-        sb.append("\n硬件识别码："+Build.FINGERPRINT);
-        sb.append("\n硬件名称："+Build.HARDWARE);
-        sb.append("\nHOST:"+Build.HOST);
-        sb.append("\n修订版本列表："+Build.ID);
-        sb.append("\n硬件制造商："+Build.MANUFACTURER);
-        sb.append("\n版本："+Build.MODEL);
-        sb.append("\n硬件序列号："+Build.SERIAL);
-        sb.append("\n手机制造商："+Build.PRODUCT);
-        sb.append("\n描述Build的标签："+Build.TAGS);
-        sb.append("\nTIME:"+Build.TIME);
-        sb.append("\nbuilder类型："+Build.TYPE);
-        sb.append("\nUSER:"+Build.USER);
+    private String getDeviceInfo() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("主板：" + Build.BOARD);
+        sb.append("\n系统启动程序版本号：" + Build.BOOTLOADER);
+        sb.append("\n系统定制商：" + Build.BRAND);
+        sb.append("\ncpu指令集：" + Build.CPU_ABI);
+        sb.append("\ncpu指令集2：" + Build.CPU_ABI2);
+        sb.append("\n设置参数：" + Build.DEVICE);
+        sb.append("\n显示屏参数：" + Build.DISPLAY);
+        sb.append("\n无线电固件版本：" + Build.getRadioVersion());
+        sb.append("\n硬件识别码：" + Build.FINGERPRINT);
+        sb.append("\n硬件名称：" + Build.HARDWARE);
+        sb.append("\nHOST:" + Build.HOST);
+        sb.append("\n修订版本列表：" + Build.ID);
+        sb.append("\n硬件制造商：" + Build.MANUFACTURER);
+        sb.append("\n版本：" + Build.MODEL);
+        sb.append("\n硬件序列号：" + Build.SERIAL);
+        sb.append("\n手机制造商：" + Build.PRODUCT);
+        sb.append("\n描述Build的标签：" + Build.TAGS);
+        sb.append("\nTIME:" + Build.TIME);
+        sb.append("\nbuilder类型：" + Build.TYPE);
+        sb.append("\nUSER:" + Build.USER);
         return sb.toString();
     }
 
@@ -659,7 +709,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testForEachNull() {
         String[] strFors = null;
-        for (String item: strFors) {
+        for (String item : strFors) {
             Log.d(TAG, "for each");
         }
     }

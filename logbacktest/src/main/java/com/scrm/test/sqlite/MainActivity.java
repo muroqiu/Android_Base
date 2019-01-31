@@ -3,9 +3,11 @@ package com.scrm.test.sqlite;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LogUtils.init(LogUtils.sProcessName);
 
         edtTest = (EditText) findViewById(R.id.edtTest);
         txtTest = (TextView) findViewById(R.id.txtTest);
@@ -665,9 +669,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnLogClick(View view) {
+        startService(new Intent(this, LogProcessService.class));
+
         for (int i =0; i<= 100; i++) {
-            LogUtils.d(TAG, i + " just test Linux version 3.18.22+ (flyme@mz-builder-5) (gcc version 4.9.x-google 20140827 (prerelease) (GCC) ) #1 SMP PREEMPT Tue Jul 24 20:23:08 CST 2018");
+//            SystemClock.sleep(15);
+            LogUtils.d(TAG, i + " just test MainActivity MainActivity MainActivity MainActivity MainActivity");
         }
 
+    }
+
+    public void onBtnLogNewClick(View view) {
+        startService(new Intent(this, LogProcessServiceNew.class));
+
+        for (int i =0; i<= 100; i++) {
+//            SystemClock.sleep(15);
+            LogUtils.d(TAG, i + " just test MainActivity MainActivity MainActivity MainActivity MainActivity");
+        }
+    }
+
+    public void onBtnLogSingleClick(View view) {
+        for (int i =0; i<= 100; i++) {
+            SystemClock.sleep(15);
+            LogUtils.d(TAG, i + " just test MainActivity MainActivity MainActivity MainActivity MainActivity");
+        }
     }
 }

@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.scrm.im"
+        applicationId "com.scrm.test"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
@@ -36,5 +36,5 @@ dependencies {
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
     implementation 'org.zeroturnaround:zt-zip:1.13'
     api "org.slf4j:slf4j-api:1.7.25"
-    api 'com.github.tony19:logback-android:1.3.0-2'
+    api 'com.github.tony19:logback-android:1.3.0-3'
 }

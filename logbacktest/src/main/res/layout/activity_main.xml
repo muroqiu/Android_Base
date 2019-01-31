@@ -14,7 +14,8 @@
             android:layout_height="100dp"
             android:drawablePadding="20dp"
             android:gravity="bottom"
-            android:paddingLeft="20dp" />
+            android:paddingLeft="20dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnLog"
@@ -25,7 +26,29 @@
             android:gravity="bottom"
             android:onClick="onBtnLogClick"
             android:paddingLeft="20dp"
-            android:text="日志测试" />
+            android:text="多进程日志测试" />
+
+        <Button
+            android:id="@+id/btnLogNew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:drawablePadding="20dp"
+            android:gravity="bottom"
+            android:onClick="onBtnLogNewClick"
+            android:paddingLeft="20dp"
+            android:text="多进程日志测试New" />
+
+        <Button
+            android:id="@+id/btnLogSingle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:drawablePadding="20dp"
+            android:gravity="bottom"
+            android:onClick="onBtnLogSingleClick"
+            android:paddingLeft="20dp"
+            android:text="单进程日志测试" />
 
         <Button
             android:id="@+id/btnTest"
