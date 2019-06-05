@@ -34,10 +34,13 @@ public class Simulator {
         } else {
             String errorStr = resultMessage.toString();
             if (errorStr.contains("Permission") || errorStr.contains("EPIPE")) {
+                Log.d(TAG, "-----cmd--- Permission " + cmd);
                 throw new RunException("未授权ROOT" + "权限");
             } else if (errorStr.contains("Utf7ImeService")) {
+                Log.d(TAG, "-----cmd--- Utf7ImeService " + cmd);
                 throw new RunException("未正常安装51zan输入法，请在输入法设置查看是否安装");
             } else if (errorStr.contains("INSTALL_FAILED_INVALID_APK")) {
+                Log.d(TAG, "-----cmd--- INSTALL_FAILED_INVALID_APK " + cmd);
                 throw new RunException("未正常安装51zan输入法，请在输入法设置查看是否安装");
             }
         }

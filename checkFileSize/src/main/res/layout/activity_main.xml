@@ -13,14 +13,15 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
+        android:padding="10dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDebug"
+        <EditText
+            android:id="@+id/edtDebug"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="10dp"/>
+            android:layout_height="500dp"
+            android:layout_margin="10dp"
+            android:editable="false"/>
 
         <Button
             android:id="@+id/btnTest"
@@ -34,20 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="测试保存配置数据"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/btnLoad"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="测试读取配置数据"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/btnClear"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="清理过期测试数据"
             android:layout_margin="10dp"/>
 
     </LinearLayout>
