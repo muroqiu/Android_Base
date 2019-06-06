@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e("MainActivity", e.toString());
                 }
-                tvDebug.append("\n");
             }
         });
 

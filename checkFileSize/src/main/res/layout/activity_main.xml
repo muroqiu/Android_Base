@@ -13,29 +13,29 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/edtDebug"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
             android:editable="false"/>
 
         <Button
             android:id="@+id/btnTest"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:text="存储检查" />
+            android:layout_margin="5dp"
+            android:text="存储检查SD卡目录" />
 
         <Button
             android:id="@+id/btnSet"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="测试保存配置数据"
-            android:layout_margin="10dp"/>
+            android:text="存储检查系统data目录"
+            android:layout_margin="5dp"/>
 
     </LinearLayout>
 
