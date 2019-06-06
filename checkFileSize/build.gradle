@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.scrm.file.check"
+        applicationId "com.scrm.im"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1

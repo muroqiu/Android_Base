@@ -1,4 +1,4 @@
-package com.scrm.assistant;
+package com.scrm.im;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,13 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.scrm.assistant.Utils.SPUtils;
-import com.scrm.assistant.Utils.Simulator;
-import com.scrm.assistant.Utils.UriCacher;
-
-import java.util.Random;
+import com.scrm.im.Utils.SPUtils;
+import com.scrm.im.Utils.Simulator;
 
 public class MainActivity extends AppCompatActivity {
     Button btnTest;
@@ -45,11 +41,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    tvDebug.append(Simulator.execute("du -sm /data/data/* | awk '$1 > 3' | sort -nr | head -5"));
+                    tvDebug.append(Simulator.execute("du -sm /sdcard/* | awk '$1 > 100' | sort -nr | head -3"));
                     tvDebug.append("\n");
                 } catch (Exception e) {
                     Log.e("MainActivity", e.toString());
                 }
+                try {
+                    tvDebug.append(Simulator.execute("du -sm /sdcard/tencent/MicroMsg/* | awk '$1 > 100' | sort -nr | head -3"));
+                    tvDebug.append("\n");
+                } catch (Exception e) {
+                    Log.e("MainActivity", e.toString());
+                }
+                try {
+                    tvDebug.append(Simulator.execute("du -sm /sdcard/scrm/* | awk '$1 > 100' | sort -nr | head -3"));
+                    tvDebug.append("\n");
+                } catch (Exception e) {
+                    Log.e("MainActivity", e.toString());
+                }
+                tvDebug.append("\n");
             }
         });
 
@@ -57,11 +66,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    tvDebug.append(Simulator.execute("du -sm /sdcard/* | awk '$1 > 3' | sort -nr | head -5"));
+                    tvDebug.append(Simulator.execute("du -sm /data/data/* | awk '$1 > 100' | sort -nr | head -3"));
                     tvDebug.append("\n");
                 } catch (Exception e) {
                     Log.e("MainActivity", e.toString());
                 }
+                try {
+                    tvDebug.append(Simulator.execute("du -sm /data/data/com.tencent.mm/* | awk '$1 > 100' | sort -nr | head -3"));
+                    tvDebug.append("\n");
+                } catch (Exception e) {
+                    Log.e("MainActivity", e.toString());
+                }
+                try {
+                    tvDebug.append(Simulator.execute("du -sm /data/data/com.tencent.mm/MicroMsg/* | awk '$1 > 100' | sort -nr | head -3"));
+                    tvDebug.append("\n");
+                } catch (Exception e) {
+                    Log.e("MainActivity", e.toString());
+                }
+                tvDebug.append("\n");
             }
         });
 

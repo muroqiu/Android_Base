@@ -1,4 +1,4 @@
-package com.scrm.assistant.Utils;
+package com.scrm.im.Utils;
 
 import android.os.Handler;
 import android.os.HandlerThread;

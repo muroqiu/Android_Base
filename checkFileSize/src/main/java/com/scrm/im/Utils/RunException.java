@@ -1,4 +1,4 @@
-package com.scrm.assistant.Utils;
+package com.scrm.im.Utils;
 
 public class RunException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.scrm.assistant.Utils;
+package com.scrm.im.Utils;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
