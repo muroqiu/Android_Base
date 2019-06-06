@@ -3,8 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
 
-
-
     defaultConfig {
         applicationId "com.scrm.im"
         minSdkVersion 19
@@ -16,13 +14,41 @@ android {
 
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    lintOptions {
+        abortOnError false
     }
 
+    signingConfigs {
+        release {
+            storeFile file("key.jks")
+            storePassword "ndgsmuroqiu"
+            keyAlias "ndgs"
+            keyPassword "ndgsmuroqiu"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguard.cfg'
+            applicationVariants.all { variant ->
+                appendVersionNameVersionCode(variant, defaultConfig)
+            }
+        }
+    }
+}
+
+def appendVersionNameVersionCode(variant, defaultConfig) {
+    variant.outputs.all {
+        def fileName = "check-" + new Date().format("yyyyMMdd") + "-v" + defaultConfig.versionName + ".apk"
+        outputFileName = fileName
+    }
+
+}
+
+
+def releaseTime() {
+    return new Date().format("yyyy.MM.dd.HH.mm", TimeZone.getTimeZone("GMT+8:00"))
 }
 
 dependencies {
