@@ -19,21 +19,16 @@ import android.widget.TextView;
 import com.scrm.test.sqlite.db.DbManager;
 import com.scrm.test.sqlite.db.SnsInfo;
 
-import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
 
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,15 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
     String strTest2 = "e4bda0e5a5bd";
 
-    private String mCurrApkPath = "/sdcard/scrm/db/36faa62b7d05-enmicromsg20190130T132559.db";
-    //    private String mCurrApkPath = "/sdcard/scrm/db/EnMicroMsg-1041636089-0130.db";
+    //    private String mCurrApkPath = "/sdcard/scrm/e564c632-enmicromsg20190610T112951.db";
+//private String mUin = "2059668290";
+    private String mCurrApkPath = "/sdcard/scrm/379839c-enmicromsg20190610T040419.db";
+    private String mUin = "452178402";
 //    private String mCurrApkPath = "/sdcard/scrm/db/288a959c7cf5-enmicromsg20190130T120103.db";
 //    private String mUin = "1041636089";
 //    private String mUin = "-912274357";
-    private String mUin = "-1934568920";
 
     // 867251035344598   91c1892
-    private String mDeviceID = "99001204674081";
+    private String mDeviceID = "868594049901773";
     //    enmicromsg20181108T000021
 //    uin: 490451521
 //    mDeviceID: 99001204674081
@@ -290,6 +286,8 @@ public class MainActivity extends AppCompatActivity {
         return "";
     }
 
+    private static final String ALIAS_DATABASE = "dcr";
+
     /**
      * 连接数据库
      *
@@ -310,23 +308,48 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+//        String newFileName;
+        File newFile = new File(dbFile.getParentFile(), "decr.db");
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        SQLiteDatabase db = null;
         try {
             //打开数据库连接
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, mDbPassword, null, hook);
-            //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
-            Cursor c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null);
-            while (c1.moveToNext()) {
-                String userName = c1.getString(c1.getColumnIndex("username"));
-                String alias = c1.getString(c1.getColumnIndex("alias"));
-                String nickName = c1.getString(c1.getColumnIndex("nickname"));
-
-                Log.d("data", " userName " + userName + " alias " + alias + " nickName " + nickName);
-            }
-            c1.close();
+//            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, mDbPassword, null, hook);
+            db = SQLiteDatabase.openOrCreateDatabase(newFile.getAbsolutePath(), "", null);
             db.close();
+            db = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), mDbPassword, null, SQLiteDatabase.OPEN_READWRITE, hook);
+            Log.d("openDatabase", "-Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
+            db.rawExecSQL(String.format("ATTACH DATABASE '%s' AS '%s' KEY '';", newFile.getAbsolutePath(), ALIAS_DATABASE));
+            Log.d("ATTACH", "-Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
+            copyTable(db, TABLES);
+            // 消息增量表
+            db.rawExecSQL(String.format("create table '%s'.message as select * from message where createtime >= '%d' order by createtime;", ALIAS_DATABASE, 1560009600000L));
+            Log.d("copyTable", "-Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
+            db.rawExecSQL(String.format("DETACH DATABASE '%s';", ALIAS_DATABASE));
+            Log.d("DETACH", "-Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
+//            db.close();
+
+            //查询所有联系人（verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
+//            Cursor c1 = db.rawQuery("select * from rcontact where verifyFlag = 0 and type != 4 and type != 2 and nickname != '' limit 20, 9999", null);
+//            while (c1.moveToNext()) {
+//                String userName = c1.getString(c1.getColumnIndex("username"));
+//                String alias = c1.getString(c1.getColumnIndex("alias"));
+//                String nickName = c1.getString(c1.getColumnIndex("nickname"));
+//
+//                Log.d("data", " userName " + userName + " alias " + alias + " nickName " + nickName);
+//                break;
+//            }
+//            c1.close();
+//            db.close();
         } catch (Exception e) {
             Log.e("openWxDb", "读取数据库信息失败" + e.toString());
             throw e;
+        } finally {
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
     }
 
@@ -402,22 +425,24 @@ public class MainActivity extends AppCompatActivity {
 //        initPhoneIds();
         imeiLst.clear();
 
-        imeiLst.add("36faa62b7d05");
-        imeiLst.add("869288034308461");
-        imeiLst.add("869288034308479");
+//        imeiLst.add("868594049901773");
+//        imeiLst.add("868594049901765");
+//        imeiLst.add("99001229351989");
+//
+//        imeiLst.add("e564c632");
 
-//        imeiLst.add("288a959c7cf5");
-//        imeiLst.add("868374038376901");
-//        imeiLst.add("868374038376893");
+        imeiLst.add("868242030046451");
+        imeiLst.add("868242030046469");
+        imeiLst.add("99001070007322");
 
-        imeiLst.add("1234567890ABCDEF");
-        imeiLst.add("1234567890abcdef");
-        imeiLst.add("0123456789abcdef");
-        imeiLst.add("0123456789ABCDEF");
-        imeiLst.add("FFFFFFFFFFFFFFFF");
-//        imeiLst.add("869722033574277");
-//        imeiLst.add("869722033574285");
-//        imeiLst.add("99001204678712");
+        imeiLst.add("379839c");
+//
+//
+//        imeiLst.add("1234567890ABCDEF");
+//        imeiLst.add("1234567890abcdef");
+//        imeiLst.add("0123456789abcdef");
+//        imeiLst.add("0123456789ABCDEF");
+//        imeiLst.add("FFFFFFFFFFFFFFFF");
 
         for (int i = 0; i < imeiLst.size(); i++) {
             try {
@@ -431,26 +456,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         // TODO Auto-generated method stub
-        try {
-            FileInputStream file = new FileInputStream("/sdcard/scrm/db/autoauth.cfg");
-            ObjectInputStream mObjectInputStream = new ObjectInputStream(file);
-            Map map = (Map) mObjectInputStream.readObject();
-            System.out.println(map);
-
-            file = new FileInputStream("/sdcard/scrm/db/CompatibleInfo-029.cfg");
-            mObjectInputStream = new ObjectInputStream(file);
-            map = (Map) mObjectInputStream.readObject();
-            System.out.println(map);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//            FileInputStream file = new FileInputStream("/sdcard/scrm/db/autoauth.cfg");
+//            ObjectInputStream mObjectInputStream = new ObjectInputStream(file);
+//            Map map = (Map) mObjectInputStream.readObject();
+//            System.out.println(map);
+//
+//            file = new FileInputStream("/sdcard/scrm/db/CompatibleInfo-029.cfg");
+//            mObjectInputStream = new ObjectInputStream(file);
+//            map = (Map) mObjectInputStream.readObject();
+//            System.out.println(map);
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
     }
 
