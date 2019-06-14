@@ -37,6 +37,13 @@
             android:text="存储检查系统data目录"
             android:layout_margin="5dp"/>
 
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="清除白名单"
+            android:layout_margin="5dp"/>
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
