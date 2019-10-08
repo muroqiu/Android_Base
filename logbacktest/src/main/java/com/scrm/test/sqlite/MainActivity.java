@@ -658,7 +658,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBtnDeviceInfoClick(View view) {
         Log.d(TAG, getDeviceInfo());
         initPhoneIds();
-        testForEachNull();
+//        testForEachNull();
     }
 
     private void testForEachNull() {

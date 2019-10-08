@@ -361,6 +361,7 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public void initPhoneIds() {
+        Log.e("initPhoneIds", "initPhoneIds");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             try {
                 Log.d("initPhoneIds", "-Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
@@ -729,7 +730,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBtnDeviceInfoClick(View view) {
         Log.d(TAG, getDeviceInfo());
         initPhoneIds();
-        testForEachNull();
+//        testForEachNull();
     }
 
     private void testForEachNull() {
