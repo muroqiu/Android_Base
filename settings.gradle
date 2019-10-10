@@ -4,4 +4,5 @@ include ':sample',
         ':sqlitetest',
         ':checkFileSize',
         ':socketServer',
+        ':socketClient',
         ':logbacktest'
