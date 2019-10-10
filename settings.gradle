@@ -3,4 +3,5 @@ include ':sample',
         ':library:NgdsUtils',
         ':sqlitetest',
         ':checkFileSize',
+        ':socketServer',
         ':logbacktest'
