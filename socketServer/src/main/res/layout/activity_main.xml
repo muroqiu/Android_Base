@@ -17,12 +17,24 @@
         <TextView
             android:id="@+id/tv_show"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_margin="5dp"/>
         <TextView
             android:id="@+id/tv_IP"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"/>
+        <EditText
+            android:id="@+id/edt_Comment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="commnet to send"
+            android:layout_margin="5dp"/>
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="发送"
             android:layout_margin="5dp"/>
 
     </LinearLayout>
