@@ -26,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(android.os.Message msg) {
             if (msg.what==0x11) {
                 Bundle bundle = msg.getData();
-// tv_show.setText("client:  "+bundle.getString("msg")+"\n");
-                initJX(bundle.getString("msg"));
+                tv_show.setText("recive:  "+bundle.getString("msg")+"\n");
             }
         };
     };
@@ -87,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
         }.start();
-    }
-
-    //解析
-    private static void initJX(String data){
-        tv_show.setText(data);
     }
 
     /**
