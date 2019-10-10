@@ -19,10 +19,30 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="5dp"/>
-        <TextView
-            android:id="@+id/tv_IP"
+        <EditText
+            android:id="@+id/edt_IP"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:text="192.168.20.66"
+            android:layout_margin="5dp"/>
+        <Button
+            android:id="@+id/bt_connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="连接"
+            android:layout_margin="5dp"/>
+        <EditText
+            android:id="@+id/edt_Comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="a"
+            android:hint="待发送内容"
+            android:layout_margin="5dp"/>
+        <Button
+            android:id="@+id/bt_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送"
             android:layout_margin="5dp"/>
 
     </LinearLayout>
