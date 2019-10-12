@@ -8,4 +8,6 @@ include ':sample',
         ':websocketServer',
         ':websocketClient',
         ':WebSocketClient-master',
+        ':BluetoothClient',
+        ':BluetoothServer',
         ':logbacktest'
