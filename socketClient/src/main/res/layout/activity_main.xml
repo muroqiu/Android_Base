@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/tv_show"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"/>
         <EditText
             android:id="@+id/edt_IP"
@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:text="a"
             android:hint="待发送内容"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/bt_send"
             android:layout_width="match_parent"

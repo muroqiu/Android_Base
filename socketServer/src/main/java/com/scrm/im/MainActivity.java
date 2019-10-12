@@ -59,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
                     serverSocket = new ServerSocket(30000);
                     Socket socket = serverSocket.accept();
                     output = socket.getOutputStream();
-                    output.write(str.getBytes("utf-8"));
-                    output.flush();
+//                    output.write(str.getBytes("utf-8"));
+//                    output.write("a2".getBytes("utf-8"));
+//                    output.flush();
+                    send(output);
                     socket.shutdownOutput();
                     Message msg = new Message();
                     msg.what = 0x11;
@@ -97,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    private void send(OutputStream output) throws IOException {
+        for (int i = 0; i < 10 ; i++) {
+            output.write(("server " + i + "\n").getBytes("utf-8"));
+            output.flush();
+        }
+
+    }
 //
 //    private void receive(){
 //        new Thread() {

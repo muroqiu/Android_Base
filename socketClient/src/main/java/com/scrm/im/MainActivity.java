@@ -148,8 +148,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 //向服务器发送信息
-                ou.write(txt1.getBytes("utf-8"));
-                ou.flush();
+//                ou.write(txt1.getBytes("utf-8"));
+//                ou.flush();
+                send(ou);
                 bundle.putString("msg", buffer.toString());
                 msg.setData(bundle);
                 //发送消息 修改UI线程中的组件
@@ -170,5 +171,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void send(OutputStream ou) throws IOException {
+        for (int i = 0; i < 100 ; i++) {
+            ou.write(("client" + i + " ").getBytes("utf-8"));
+            ou.flush();
+        }
+    }
 }
 
