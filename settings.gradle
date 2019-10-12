@@ -5,4 +5,7 @@ include ':sample',
         ':checkFileSize',
         ':socketServer',
         ':socketClient',
+        ':websocketServer',
+        ':websocketClient',
+        ':WebSocketClient-master',
         ':logbacktest'
