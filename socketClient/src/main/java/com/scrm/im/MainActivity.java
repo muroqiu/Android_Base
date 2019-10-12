@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_send:
                 geted1 = edt_Comment.getText().toString();
-                tv_show.append("client:"+geted1+"\n");
+//                tv_show.append("client:"+geted1+"\n");
                 //启动线程 向服务器发送和接收信息
                 new MyThread(geted1).start();
                 break;
